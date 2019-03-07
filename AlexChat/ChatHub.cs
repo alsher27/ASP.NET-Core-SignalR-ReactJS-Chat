@@ -11,6 +11,7 @@ namespace AlexChat
         public async Task Send(string username, string message)
         {
             await this.Clients.All.SendAsync("Send", username, message);
+            Console.Write(1);
         }
     }
 }
