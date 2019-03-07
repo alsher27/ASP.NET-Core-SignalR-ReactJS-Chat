@@ -10,6 +10,7 @@ namespace AlexChat
     {
         public async Task Send(string username, string message)
         {
+            /// TODO save msg before sending
             await this.Clients.All.SendAsync("Send", username, message);
         }
     }
