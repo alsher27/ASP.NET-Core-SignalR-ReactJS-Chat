@@ -4,14 +4,16 @@ using AlexChat.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AlexChat.Migrations
 {
     [DbContext(typeof(ChatContext))]
-    partial class ChatContextModelSnapshot : ModelSnapshot
+    [Migration("20190311132544_110320191525")]
+    partial class _110320191525
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +30,6 @@ namespace AlexChat.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chats");
-
-                    b.HasData(
-                        new { Id = 1 }
-                    );
                 });
 
             modelBuilder.Entity("AlexChat.Models.Message", b =>
@@ -82,7 +80,7 @@ namespace AlexChat.Migrations
             modelBuilder.Entity("AlexChat.Models.Message", b =>
                 {
                     b.HasOne("AlexChat.Models.Chat", "chat")
-                        .WithMany("Messages")
+                        .WithMany()
                         .HasForeignKey("chatId");
                 });
 

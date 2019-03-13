@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlexChat.Models
 {
     public class Chat
     {
-            public int Id { get; set; }
-            public ICollection<UserChat> UserChats { get; set; }
+        public Chat()
+        {
+            Messages = new List<Message>();
+        }
+        public int Id { get; set; }
+        public ICollection<Message> Messages { get; set; }
+        public ICollection<UserChat> UserChats { get; set; }
     }
 }

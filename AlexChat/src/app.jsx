@@ -5,7 +5,7 @@ import Chat from './Chat.jsx';
 class App extends React.Component {
     render() {
         return (
-            <div>Hello react <Chat /></div>
+            <div> <Chat apiUrl="/api/message" /> </div>
         );
     }
 }

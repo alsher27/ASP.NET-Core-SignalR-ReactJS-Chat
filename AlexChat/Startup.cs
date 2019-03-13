@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AlexChat.Models;
+using AlexChat.Repository;
+using AlexChat.Service;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using React.AspNet;
 
 namespace AlexChat
 {
@@ -21,13 +20,18 @@ namespace AlexChat
             services.AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
+            services.AddAutoMapper();
+
             //  services.AddReact();
-            
+
 
             string connection = "Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;";
         
             services.AddDbContext<ChatContext>(options =>
                 options.UseSqlServer(connection));
+
+            services.AddScoped<IMessageRepo, MessageRepo>();
+            services.AddScoped<IMessageService, MessageService>();
 
             return services.BuildServiceProvider();
         }
