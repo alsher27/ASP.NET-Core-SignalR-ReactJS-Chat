@@ -1,40 +1,39 @@
 ﻿import React, { Component } from 'react';
 import * as SignalR from '@aspnet/signalr';
+import { connect } from "react-redux";
+import { addMessages } from './actions/addMessages/'
 
-class Chat extends Component {
+class ConnChat extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            nick: '',
+        this.state = {           
             message: '',
             messages: [],
-            chatid: 1,
+            chatid: 0,
             hubConnection: null,
         };
     }
 
     componentDidMount = () => {
-        const nick = window.prompt('Your name:', '');
+        //const nick = window.prompt('Your name:', '');
         this.getMessages();
-        let token = "hfv6vpcsh3h5trxu";
         const hubConnection = new SignalR.HubConnectionBuilder()
             .withUrl('http://localhost:5000/chat', {
-                skipNegotiation: true,
-                accessTokenFactory: () => token,
+                skipNegotiation: true,              
                 transport: SignalR.HttpTransportType.WebSockets
             })
             .configureLogging(SignalR.LogLevel.Information)
             .build();
         
 
-        this.setState({ hubConnection, nick }, () => {
+        this.setState({ hubConnection }, () => {
             this.state.hubConnection
                 .start()
                 .then(() => console.log('Connection started!'))
                 .catch(err => console.log('Error while establishing connection'));
 
-            this.state.hubConnection.on('Send', (mes) => {
+            this.state.hubConnection.on('Receive', (mes) => {
                 this.setState({
                     messages: this.state.messages.concat(mes)  
                 });
@@ -45,7 +44,7 @@ class Chat extends Component {
 
     sendMessage = () => {
         this.state.hubConnection
-            .invoke('Send', this.state.nick, this.state.message, this.state.chatid)
+            .invoke('Transfer', this.props.username, this.state.message, this.state.chatid)
             .catch(err => console.error(err));
 
         this.setState({ message: '' });
@@ -67,6 +66,11 @@ class Chat extends Component {
     render() {
         return (
             <div>
+                <div>
+                    {this.state.messages.map((message, index) => (
+                        <span style={{ display: 'block' }} key={index}><b>{message.fromUsername}</b>: {message.text} - {message.dateTime} </span>
+                    ))}
+                </div>
                 <br />
                 <input
                     type="text"
@@ -75,15 +79,24 @@ class Chat extends Component {
                 />
 
                 <button onClick={this.sendMessage}>Send</button>
-
-                <div>
-                    {this.state.messages.map((message, index) => (
-                        <span style={{ display: 'block' }} key={index}><b>      </b>: {message.text} - {message.dateTime} </span>
-                    ))}
-                </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        username: state.username,
+        current_chat: state.current_chat,
+        messages: state.messages
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addMessages: messages => dispatch(addMessages(messages))
+    };
+}
+const Chat = connect(mapStateToProps, mapDispatchToProps)(ConnChat);
 
 export default Chat;

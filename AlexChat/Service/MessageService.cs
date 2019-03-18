@@ -7,6 +7,7 @@ using AlexChat.Models;
 using AlexChat.Repository;
 using AlexChat.ViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlexChat.Service
 {
@@ -14,28 +15,39 @@ namespace AlexChat.Service
     {
         private readonly IMessageRepo _messageRepository;
         private readonly IMapper _mapper;
-        public MessageService(IMessageRepo messageRepository, IMapper mapper)
+
+        private readonly ChatContext _chatContext;
+        public MessageService(IMessageRepo messageRepository, IMapper mapper, ChatContext chatContext)
+
         {
             _messageRepository = messageRepository;
             _mapper = mapper;
+
+            _chatContext = chatContext;
         }
-        public List<MessageViewModel> GetMessagesFor(int id)
+        public async Task<List<MessageViewModel>> GetMessagesForChat(int id)
         {
-            var messages = _messageRepository.GetMessagesForChat(id).Result;
+            var messages = await _messageRepository.GetMessagesForChat(id); 
             var messagesViewModel = new List<MessageViewModel>();
             foreach (Message mes in messages)
             {
-                messagesViewModel.Add(_mapper.Map<Message, MessageViewModel>(mes));
+                var temp = _mapper.Map<Message, MessageViewModel>(mes);
+                temp.FromUsername = mes.User.UserName;
+                messagesViewModel.Add(temp);
             }
             return messagesViewModel;
         }
 
-        public void SendMessage(MessageViewModel message)
-        {
 
+        public async Task<List<User>> ProcessMessage(MessageViewModel message)
+        {
+           
             var mes = _mapper.Map<MessageViewModel, Message>(message);
-            _messageRepository.SaveMessage(mes);
+            mes.UserId = _chatContext.Users.FirstOrDefault(u => u.UserName == message.FromUsername).Id;
+            
+            return await _messageRepository.ProcessMessage(mes);
         }
+        
         
     }
 }

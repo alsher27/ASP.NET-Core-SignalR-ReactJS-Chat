@@ -9,10 +9,8 @@ namespace AlexChat.Controllers
 {
     public class HomeController : Controller
     {
-        private ChatContext db;
         public HomeController(ChatContext context)
         {
-            db = context;
         }
 
         public IActionResult Index()

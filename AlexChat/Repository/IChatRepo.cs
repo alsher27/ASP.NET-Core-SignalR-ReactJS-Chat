@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AlexChat.Repository
 {
-    public interface IMessageRepo
+    public interface IChatRepo
     {
-        Task<List<Message>> GetMessagesForChat(int id);
-        Task<List<User>> ProcessMessage(Message message);
+        Task<int> CreateChat(List<User> users, string chatname);
+        Task<List<Chat>> GetChatsForUser(string username);
     }
 }

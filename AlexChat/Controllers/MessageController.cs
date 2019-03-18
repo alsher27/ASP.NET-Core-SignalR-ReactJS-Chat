@@ -4,9 +4,12 @@ using AlexChat.Models;
 using AlexChat.Service;
 using AutoMapper;
 using AlexChat.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace AlexChat.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
@@ -18,11 +21,12 @@ namespace AlexChat.Controllers
             
         }
 
+       
         [HttpGet]    
         [Route("all")]
-        public List<MessageViewModel> Get(int id)
+        public async Task<List<MessageViewModel>> Get(int id)
         {
-            return _messageService.GetMessagesFor(id);
+            return await _messageService.GetMessagesForChat(id);
         }
 
         public IActionResult Index()

@@ -8,8 +8,9 @@ namespace AlexChat.ViewModels
 {
     public class MessageViewModel
     {
-        public string text { get; set; }
-        public string dateTime { get; set; }
-        public int chat { get; set; }
+        public string Text { get; set; }
+        public string DateTime { get; set; }
+        public int Chat { get; set; }
+        public string FromUsername { get; set; }
     }
 }

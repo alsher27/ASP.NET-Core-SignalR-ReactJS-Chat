@@ -11,26 +11,30 @@ namespace AlexChat.Repository
 
         public async Task<List<Message>> GetMessagesForChat(int id)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ChatContext>().UseSqlServer("Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;");
+            //var optionsBuilder = new DbContextOptionsBuilder<ChatContext>().UseSqlServer("Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;");
 
-            using (var context = new ChatContext(optionsBuilder.Options))
+            using (var context = new ChatContext(/*optionsBuilder.Options*/))
             {
-                return await context.Messages.Where(mes=>mes.chat.Id==id).ToListAsync();
+                return await context.Messages.Include(m=>m.User.UserName) 
+                                             .Where(mes=>mes.Chat.Id==id)
+                                             .Take(20)
+                                             .ToListAsync(); 
             }
         }
 
-        public void SaveMessage(Message mes)
+        public async Task<List<User>> ProcessMessage(Message mes)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ChatContext>().UseSqlServer("Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;");
+            //var optionsBuilder = new DbContextOptionsBuilder<ChatContext>().UseSqlServer("Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;");
 
-            using (var context = new ChatContext(optionsBuilder.Options))
+            using (var context = new ChatContext())
             {
-                var chat = context.Chats.Include(x => x.Messages).FirstOrDefault(x => x.Id == 1);
-                chat.Messages.Add(mes);
-               
+                context.Messages.Add(mes);
                 context.SaveChanges();
+
+                var usersForChat = await context.UserChats.Where(uc => uc.Chat == mes.Chat).Select(uc => uc.User).ToListAsync();
+                return usersForChat;
+
             }
         }
-      
     }
 }
