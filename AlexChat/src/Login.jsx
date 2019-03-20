@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import store from './store/store.jsx'
 import { connect } from 'react-redux';
-import { setUsername } from './actions/loginAction.jsx';
+import { setUsername } from './actions/setUsername.jsx';
 import { userInfo } from 'os';
 
     class LoginConn extends Component {
@@ -63,7 +63,7 @@ import { userInfo } from 'os';
                 <br />
                 Password:
                 <input
-                    type="text"
+                    type="password"
                     value={this.state.pass}
                     onChange={e => this.setState({ pass: e.target.value })}
                 />

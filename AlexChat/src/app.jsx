@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import Chat from "./Chat.jsx";
 import Signin from "./Signin.jsx";
 import store from "./store/store.jsx";
-import { setUsername } from './actions/loginAction.jsx';
+import { setUsername } from './actions/setUsername.jsx';
 
 
 

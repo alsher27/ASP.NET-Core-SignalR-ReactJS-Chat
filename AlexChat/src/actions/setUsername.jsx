@@ -1,4 +1,3 @@
-﻿
-export function setUsername(payload) {
+﻿export function setUsername(payload) {
     return { type: "SET_USERNAME", payload };
 }

@@ -1,5 +1,6 @@
 ﻿using AlexChat.Models;
 using AlexChat.Service;
+using AlexChat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,16 +22,23 @@ namespace AlexChat.Controllers
 
         [HttpPost]
         [Route("createchat")]
-        public async Task<int> CreateChat([FromBody] List<string> users, string chatname)
+        public async Task<ChatViewModel> CreateChat([FromBody] ChatViewModel model)
         {
-            int ChatId = await _chatService.CreateChat(users, chatname);
-            
-            return ChatId;
+            return await _chatService.CreateChat(model.Users, model.Chatname);
         }
-
-        public async Task<List<Chat>> GetChatsForUser(string username)
+        
+        [HttpGet]
+        [Route("getchats")]
+        public async Task<List<ChatViewModel>> GetChatsForUser(string username)
         {
             return await _chatService.GetChatsForUser(username);
+        }
+
+        [HttpGet]
+        [Route("searchusers")]
+        public async Task<List<string>> SearchUsers(string username)
+        {
+            return await _chatService.SearchUsers(username);
         }
     }
 }

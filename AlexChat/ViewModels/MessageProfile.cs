@@ -14,10 +14,10 @@ namespace AlexChat.ViewModels
         {
             CreateMap<Message, MessageViewModel>(MemberList.Destination)
                 .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.DateTime.ToString("u")))
-                .ForMember(dest => dest.Chat, opt => opt.MapFrom(src => src.Chat.Id))
+                //.ForMember(dest => dest.ChatId, opt => opt.MapFrom(src => src.ChatId))
                 .ReverseMap()
-                .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => DateTime.Parse(src.DateTime)))
-                .ForPath(dest => dest.Chat.Id, opt => opt.MapFrom(src => src.Chat));
+                .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => DateTime.Parse(src.DateTime)));
+                //.ForPath(dest => dest.ChatId, opt => opt.MapFrom(src => src.ChatId));
         }
     }
 }

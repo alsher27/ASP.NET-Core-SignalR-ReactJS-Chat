@@ -3,36 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AlexChat.Models;
+using AlexChat.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlexChat.Repository
 {
     public class ChatRepo : IChatRepo
     {
-        public async Task<int> CreateChat(List<User> users, string chatname)
+        private readonly ChatContext _context;
+        public ChatRepo(ChatContext context)
         {
-            //var optionsBuilder = new DbContextOptionsBuilder<ChatContext>().UseSqlServer("Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;");
-            using (var context = new ChatContext())
-            {
-                var chat = new Chat { Name = chatname};
-                context.Add(chat);
-                foreach (User u in users)
-                {
-                    await context.AddAsync(new UserChat { Chat = chat, UserId = u.Id });
-                }
-                await context.SaveChangesAsync();
-                return chat.Id;
-            }
+            _context = context;
         }
 
-        public async Task<List<Chat>> GetChatsForUser(string username)
+        public async Task<Chat> CreateChat(List<User> users, string chatname)
         {
-            using (var context = new ChatContext())
-            {
-                return await context.UserChats.Where(uc => uc.User.UserName == username)
-                                              .Select(uc => uc.Chat)
-                                              .ToListAsync();
+
+                var chat = new Chat { Name = chatname};
+                _context.Add(chat);
+                foreach (User u in users)
+                {
+                    await _context.AddAsync(new UserChat { Chat = chat, UserId = u.Id });
+                }
+                await _context.SaveChangesAsync();
+                return chat;
+            
+        }
+
+        public async Task<List<ChatViewModel>> GetChatsForUser(string username)
+        {
+            
+            var cwm = new List<ChatViewModel> { };
+          
+            foreach (Chat c in _context.Chats)
+            {   
+                var str = _context.UserChats.Where(uc=>uc.Chat == c)
+                    .Select(uc => uc.User.UserName)
+                    .ToList();
+
+                var temp = new ChatViewModel { Chatname = c.Name,
+                    Users = str,
+                    Id = c.Id
+                };
+                cwm.Add(temp);
             }
+            return  cwm;
+        }
+
+        public async Task<List<string>> SearchUsers(string username)
+        {
+            
+                return await _context.Users.Where(u => u.UserName.Contains(username))
+                                                                .Take(5)
+                                                                .Select(u=>u.UserName)
+                                                                .ToListAsync();
+            
         }
     }
 }

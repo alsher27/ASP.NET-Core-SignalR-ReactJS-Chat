@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import store from './store/store.jsx'
 import { connect } from 'react-redux';
-import { setUsername } from './actions/loginAction.jsx';
+
 import Login from './Login.jsx';
 import Register from './Register.jsx';
 

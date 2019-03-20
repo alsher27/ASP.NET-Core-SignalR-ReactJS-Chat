@@ -1,9 +1,8 @@
 ﻿import React, { Component } from 'react';
 import store from './store/store.jsx'
 import { connect } from 'react-redux';
-import { setUsername } from './actions/loginAction.jsx';
-import { setChatId } from './actions/setChatId.jsx';
-
+import { setCurrentChat } from './actions/setCurrentChat.jsx';
+import { addChats } from './actions/addChats.jsx';
 
 class ChatSelectorConn extends Component {
 
@@ -11,32 +10,36 @@ class ChatSelectorConn extends Component {
         super(props);
             
         this.state = {
-            chatId: 0,
-            chatName:''
+            chats: this.props.chats
         };
 
     }
 
+
     render() {
-        return <div>
-            <select>
-                {this.props.messages.map()/*continue from here*/} 
-            </select>
-               </div>
+        return <div>    {this.props.chats.map( (chat, index) => { 
+                    return (<div key={index} onClick={() => this.props.setCurrentChat(chat)}> {chat.chatname} </div>)  
+                        })}
+                </div>               
     }
 }
+
+
 const mapStateToProps = state => {
     return {
         username: state.username,
-        current_chat: state.current_chat
+        current_chat: state.current_chat,
+        chats: state.chats
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        setChatId: current_chat => dispatch(setChatId(current_chat))
+        setCurrentChat: current_chat => dispatch(setCurrentChat(current_chat)),
+        addChats: chats => dispatch(addChats(chats))
     };
-}
+};
+
 const ChatSelector = connect(mapStateToProps, mapDispatchToProps)(ChatSelectorConn);
 
 export default ChatSelector;

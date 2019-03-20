@@ -14,6 +14,8 @@ namespace AlexChat.Models
         public string Text { get; set; }
         public DateTime DateTime { get; set; }
 
+        public int ChatId { get; set; }
+        [ForeignKey("ChatId")]
         public Chat Chat { get; set; }
         
         public string UserId { get; set; }

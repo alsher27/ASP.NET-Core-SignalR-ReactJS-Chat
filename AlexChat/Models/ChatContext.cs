@@ -10,10 +10,9 @@ namespace AlexChat.Models
     public class ChatContext : IdentityDbContext<User>
     {
        
-        public ChatContext()
-            : base()
+        public ChatContext(DbContextOptions<ChatContext> options)
+            : base(options)
         {
-            Chat c = new Chat { Id = 1 };
             Database.Migrate();
         }
 

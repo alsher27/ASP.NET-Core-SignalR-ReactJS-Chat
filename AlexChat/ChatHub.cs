@@ -27,12 +27,16 @@ namespace AlexChat
         {
                 
             var mes = new MessageViewModel { Text = message, DateTime = DateTime.Now.ToString("u"),
-                Chat = chatid, FromUsername = username };
+                ChatId = chatid, FromUsername = username };
 
-            var temp = await _messageService.ProcessMessage(mes);
-            var targetUsers = temp.Select(u=>u.UserName).ToList();
+            var users = await _messageService.ProcessMessage(mes);
             
-            await Clients.Users(targetUsers).SendAsync("Receive", mes);
+            var targetUsers = users.Select(u=>u.Id).ToList();
+
+
+
+            IClientProxy clientProxy = Clients.Users(targetUsers);
+            await clientProxy.SendAsync("Receive", mes);
             //await Clients.All.SendAsync("Receive", mes);
             
         }
