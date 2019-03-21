@@ -7,6 +7,9 @@ const initialState = {
     
 };
 
+//
+// TODO: components folder, actions constants, combiner reducers
+//
 function rootReducer(state = initialState, action) {
     if (action.type === "SET_USERNAME") {
         return Object.assign({}, state, { username: action.payload } )
@@ -33,6 +36,9 @@ function rootReducer(state = initialState, action) {
         }
     }
 
+    if(action.type === "LOGIN"){
+        
+    }
 
     return state;
 };

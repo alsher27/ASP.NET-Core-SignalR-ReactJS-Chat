@@ -19,35 +19,9 @@ class RegisterConn extends Component {
 
     register = () => {
         if (this.state.pass === this.state.confirm) {
-            const model = {
-                Email: this.state.email,
-                Password: this.state.pass
-            }
-            fetch("api/account/register/",
-                {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(model)
-                })
-                .then(response => {
-                    return response.text();   
-                })
-                .then(res => {
-                    if ( res == "_wrongregister_") {
-                        window.alert("This user already exists or invalid input")
-                        this.setState({
-                            email: '',
-                            pass: '',
-                            confirm: ''
-                        });
-                    }
-                    else {
-                        //route to chat
-                        this.props.setUsername( res );
-                    }
-                });
+            
+        //register
+            
         }
         else {
             window.alert("Passwords dont match");

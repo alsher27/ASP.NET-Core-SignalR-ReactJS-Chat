@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import store from './store/store.jsx'
 import { connect } from 'react-redux';
-import { setUsername } from './actions/setUsername.jsx';
+import { setUsername } from './actions/authActions.jsx/index.js';
 import { userInfo } from 'os';
 
     class LoginConn extends Component {
@@ -16,35 +16,6 @@ import { userInfo } from 'os';
 
         }
 
-    Login = () => {
-        const model = {
-            Email: this.state.email,
-            Password: this.state.pass
-        }
-        fetch("api/account/Login/",
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(model)
-            })
-            .then(response => {
-                return response.text();
-            })
-            .then(res => {
-                if (res == "_wronglogin_") {
-                    window.alert("Wrong login or password")
-                    this.setState({
-                        email: '',
-                        pass: ''
-                    });
-                }
-                else {
-                    this.props.setUsername(res);
-                }
-            });
-    }
 
     render() {
         return (
@@ -64,7 +35,7 @@ import { userInfo } from 'os';
                     onChange={e => this.setState({ pass: e.target.value })}
                 />
                
-                <button onClick={this.Login}>Login</button>
+                <button onClick={this.props.Login()}>Login</button>
 
             </div>
         );

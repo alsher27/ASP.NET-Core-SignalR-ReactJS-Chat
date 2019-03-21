@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addChats } from './actions/addChats.jsx';
-import { addChat } from './actions/addChat.jsx';
+import { addChat } from './actions/chatActions.jsx/index.js';
 
 class ChatCreatorConn extends Component {
 
     constructor(props) {
         super(props);
-            
+
         this.state = {
             nameForChat: '',
             usersForChat: [],
-            query:'', 
+            query: '',
             queryRes: []
         };
 
@@ -21,68 +21,50 @@ class ChatCreatorConn extends Component {
         const model = {
             users: [...this.state.usersForChat, this.props.username],
             chatname: this.state.nameForChat
-            }
-        fetch("api/chat/createchat/",
-        {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(model)
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(res => {
-            this.props.addChat(res);
-            this.setState({nameForChat: ''})
-        });
+        }
+
+
     }
 
     searchUsers = () => {
 
-        fetch("api/chat/searchusers?username=" + this.state.query)
-            .then(response => {
-                return response.json();
-            })
-            .then(res => {
-                this.setState({queryRes: res})
-            });
-
     }
-    
+
 
     render() {
-    return <div>
-                Search by username:
-                    <input
-                    type="text"
-                    value={this.state.query}
-                    onChange={e => {this.setState ({ query: e.target.value }) } }
-                    />
-                    <button onClick={this.searchUsers}>Search</button>
+        return <div>
+            Search by username:
+            <input
+                type="text"
+                value={this.state.query}
+                onChange={e => { this.setState({ query: e.target.value }) }}
+            />
+            <button onClick={this.searchUsers}>Search</button>
 
-                    {this.state.queryRes.map((username, index) => 
-                    <div key={index} onClick={() => this.setState({usersForChat: [...this.state.usersForChat, username]})}>
+            {this.state.queryRes.map((username, index) =>
+                <div key={index} onClick={() => this.setState({
+                    usersForChat: [...this.state.usersForChat, username]
+                })
+                }>
+                    {username}
+                </div>)}
+            <br />
+            <div>
+                Selected users:
+                {this.state.usersForChat.map((username, index) =>
+                    <div key={index}>
                         {username}
-                    </div> )}
-                    <br/>
-                    <div>
-                        Selected users:
-                        {this.state.usersForChat.map((username, index) => 
-                        <div key={index}>
-                            {username}
-                        </div> )}        
-                    </div>
-                    <br/>
-                    Name this chat:
-                    <input
-                    type="text"
-                    value={this.state.nameForChat}
-                    onChange={e => this.setState ({ nameForChat: e.target.value }) }
-                    />
-                    <button onClick={this.createChat}>Create</button>
-               </div>
+                    </div>)}
+            </div>
+            <br />
+            Name this chat:
+            <input
+                type="text"
+                value={this.state.nameForChat}
+                onChange={e => this.setState({ nameForChat: e.target.value })}
+            />
+            <button onClick={this.createChat}>Create</button>
+        </div>
     }
 }
 

@@ -6,8 +6,7 @@ import { connect } from "react-redux";
 //import Login from './Login.jsx';
 import Chat from "./Chat.jsx";
 import Signin from "./Signin.jsx";
-import store from "./store/store.jsx";
-import { setUsername } from './actions/setUsername.jsx';
+import { setUsername } from './actions/authActions.jsx/index.js';
 
 
 
@@ -32,8 +31,8 @@ class App extends React.Component {
         var username = this.getUsername();
         username.then(this.props.setUsername);
 
-        if (this.props.username/* && this.props.username !== "_wrongregister_" && this.props.username !== "_wronglogin_"*/) {
-            return(
+        if (this.props.username) {
+            return (
                 <div>
                     <Chat apiUrl="/api/message" />
                 </div>
@@ -43,13 +42,11 @@ class App extends React.Component {
             return (
                 <div>
                     <Signin />
-                </div> 
+                </div>
             )
-            }
-        
+        }        
     }
 }
-
 
 const mapStateToProps = state => {
     return { username: state.username };
@@ -68,4 +65,3 @@ ReactDOM.render(
     </Provider>,
     document.getElementById("content")
 );
-

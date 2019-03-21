@@ -7,15 +7,15 @@ import ChatCreator from './ChatCreator.jsx';
 
 import { addMessages } from './actions/addMessages.jsx'
 import { addChats } from './actions/addChats.jsx';
-import { addMessage } from './actions/addMessage.jsx';
-import {setUsername} from './actions/setUsername.jsx';
+import { addMessage } from './actions/messageActions.jsx/index.js';
+import {setUsername} from './actions/authActions.jsx/index.js';
+
 class ConnChat extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             message: '',
-            // messages: [],
             hubConnection: null,
             showChatSelector: false,
             showChatCreator: false
@@ -23,21 +23,12 @@ class ConnChat extends Component {
     }
 
     componentDidMount = () => {
-
-        fetch("api/chat/getchats?username=" + this.props.username)
-            .then(response => {
-                return response.json();
-            })
-            .then(res => {
-                    this.props.addChats(res);
-                    //this.props.setcurrentchat(res[0])
-            })
-            .then(() =>
-                this.props.chats.map((chat) => (
-                    this.getMessages(chat.id) // CHECK!
-                ))
-            )
-
+        //  get chats
+        // .then(() =>
+        //         this.props.chats.map((chat) => (
+        //             this.getMessages(chat.id) // CHECK!
+        //         ))
+        //     )
 
         const hubConnection = new SignalR.HubConnectionBuilder()
             .withUrl('http://localhost:5000/chat', {
@@ -56,11 +47,7 @@ class ConnChat extends Component {
             this.state.hubConnection.serverTimeoutInMilliseconds = 100000;
             
             this.state.hubConnection.on('Receive', (mes) => {
-                // this.setState({
-                //     messages: this.state.messages.concat(mes)
-                // });
                 this.props.addMessage(mes) 
-                
             });
         });
     };
@@ -74,22 +61,11 @@ class ConnChat extends Component {
     };
 
     getMessages = (chatid) => {
-        fetch(this.props.apiUrl + "/all?id=" + chatid)
-            .then(response => {
-                return response.json();
-            })
-            .then(json => {
-                // this.setState({
-                //     messages: [/*...this.state.messages, */...json]
-                // });
-                this.props.addMessages(json);
-            })
-            .catch(alert);
+        
     }
 
     logout = () => {
-        fetch("api/account/logout/");
-        this.props.setUsername('');
+        
     }
 
     toggleChatSelector = () => {
