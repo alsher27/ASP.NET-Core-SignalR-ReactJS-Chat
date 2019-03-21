@@ -17,7 +17,6 @@ import { userInfo } from 'os';
         }
 
     Login = () => {
-        
         const model = {
             Email: this.state.email,
             Password: this.state.pass
@@ -45,9 +44,6 @@ import { userInfo } from 'os';
                     this.props.setUsername(res);
                 }
             });
-        
-        
-
     }
 
     render() {

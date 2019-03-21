@@ -29,7 +29,7 @@ class App extends React.Component {
     }
 
     render() {
-        var username = this.getUsername()
+        var username = this.getUsername();
         username.then(this.props.setUsername);
 
         if (this.props.username/* && this.props.username !== "_wrongregister_" && this.props.username !== "_wronglogin_"*/) {

@@ -69,8 +69,7 @@ namespace AlexChat.Controllers
                 return "_wrongregister_";
             }
         }
-
-        [HttpGet]
+        
         [Route("logout")]
         public async void Logout()
         {
