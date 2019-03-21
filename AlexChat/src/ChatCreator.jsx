@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addChats } from './actions/addChats.jsx';
+import { addChat } from './actions/addChat.jsx';
 
 class ChatCreatorConn extends Component {
 
@@ -33,7 +34,7 @@ class ChatCreatorConn extends Component {
             return response.json();
         })
         .then(res => {
-            this.props.addChats({res});
+            this.props.addChat(res);
             this.setState({nameForChat: ''})
         });
     }
@@ -65,7 +66,7 @@ class ChatCreatorConn extends Component {
                     <div key={index} onClick={() => this.setState({usersForChat: [...this.state.usersForChat, username]})}>
                         {username}
                     </div> )}
-
+                    <br/>
                     <div>
                         Selected users:
                         {this.state.usersForChat.map((username, index) => 
@@ -94,7 +95,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addChats: chats => dispatch(addChats(chats))
+        addChats: chats => dispatch(addChats(chats)),
+        addChat: chat => dispatch(addChat(chat))
     };
 }
 const ChatCreator = connect(mapStateToProps, mapDispatchToProps)(ChatCreatorConn);

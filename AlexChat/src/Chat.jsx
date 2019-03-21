@@ -1,11 +1,14 @@
 ﻿import React, { Component } from 'react';
 import * as SignalR from '@aspnet/signalr';
 import { connect } from "react-redux";
-import { addMessages } from './actions/addMessages.jsx'
+
 import ChatSelector from './ChatSelector.jsx'
 import ChatCreator from './ChatCreator.jsx';
-import { addChats } from './actions/addChats.jsx';
 
+import { addMessages } from './actions/addMessages.jsx'
+import { addChats } from './actions/addChats.jsx';
+import { addMessage } from './actions/addMessage.jsx';
+import {setUsername} from './actions/setUsername.jsx';
 class ConnChat extends Component {
     constructor(props) {
         super(props);
@@ -26,10 +29,8 @@ class ConnChat extends Component {
                 return response.json();
             })
             .then(res => {
-                
                     this.props.addChats(res);
                     //this.props.setcurrentchat(res[0])
-                
             })
             .then(() =>
                 this.props.chats.map((chat) => (
@@ -53,11 +54,12 @@ class ConnChat extends Component {
                 .then(() => console.log('Connection started!'))
                 .catch(err => console.log('Error while establishing connection'));
             this.state.hubConnection.serverTimeoutInMilliseconds = 100000;
+            
             this.state.hubConnection.on('Receive', (mes) => {
                 // this.setState({
                 //     messages: this.state.messages.concat(mes)
                 // });
-                this.props.addMessages(mes) // pos. problem with '...message' in reducer
+                this.props.addMessage(mes) 
                 
             });
         });
@@ -85,6 +87,11 @@ class ConnChat extends Component {
             .catch(alert);
     }
 
+    logout = () => {
+        fetch("api/account/logout/");
+        this.props.setUsername('');
+    }
+
     toggleChatSelector = () => {
         this.setState((oldState) => ({ showChatSelector: !oldState.showChatSelector }))
     }
@@ -104,8 +111,16 @@ class ConnChat extends Component {
                 <div>
                     {this.state.showChatCreator && <ChatCreator />}
                 </div>
-                <h2>Current chat: {this.props.current_chat.chatname}</h2>
                 
+                <h2>Current user: {this.props.username}</h2>
+                <button onClick={this.logout}>Log out</button>
+                <h2>Current chat: {this.props.current_chat.chatname || 'Not selected'}</h2>
+                
+                <input
+                    type="text"
+                    value={this.state.message}
+                    onChange={e => this.setState({ message: e.target.value })}
+                />
                 <button onClick={this.sendMessage}>Send</button>
                 <div>
                     {this.props.messages.map((message, index) => {       // CHECK !!! 
@@ -116,11 +131,7 @@ class ConnChat extends Component {
                     })}
                 </div>
                 <br />
-                <input
-                    type="text"
-                    value={this.state.message}
-                    onChange={e => this.setState({ message: e.target.value })}
-                />
+                
 
                 
                 
@@ -141,7 +152,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addMessages: messages => dispatch(addMessages(messages)),
-        addChats: chats => dispatch(addChats(chats))
+        addChats: chats => dispatch(addChats(chats)),
+        addMessage: message=>dispatch(addMessage(message)),
+        setUsername: username => dispatch(setUsername(username))
     };
 }
 const Chat = connect(mapStateToProps, mapDispatchToProps)(ConnChat);

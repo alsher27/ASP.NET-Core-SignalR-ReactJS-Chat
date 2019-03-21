@@ -37,18 +37,22 @@ namespace AlexChat.Repository
           
             foreach (Chat c in _context.Chats)
             {   
-                var str = _context.UserChats.Where(uc=>uc.Chat == c)
-                    .Select(uc => uc.User.UserName)
-                    .ToList();
+                var users = _context.UserChats.Where(uc => uc.Chat == c)
+                                              .Select(uc => uc.User.UserName)
+                                              .ToList();
 
-                var temp = new ChatViewModel { Chatname = c.Name,
-                    Users = str,
+                var temp = new ChatViewModel
+                {
+                    Chatname = c.Name,
+                    Users = users,
                     Id = c.Id
                 };
                 cwm.Add(temp);
             }
-            return  cwm;
-        }
+            var result = cwm.Where(x => x.Users.Contains(username)).ToList();
+
+            return result;
+            }
 
         public async Task<List<string>> SearchUsers(string username)
         {

@@ -36,13 +36,12 @@ namespace AlexChat.Controllers
         [Route("login")]
         public async Task<string> Login([FromBody] RegisterModel model)
         {
-            User user = new User { Email = model.Email, UserName = model.Email };
             
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, isPersistent: true, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
             
             if (result.Succeeded)
             {
-                return user.UserName;
+                return model.Email;
             }
             else
             {
@@ -69,6 +68,13 @@ namespace AlexChat.Controllers
             {
                 return "_wrongregister_";
             }
+        }
+
+        [HttpGet]
+        [Route("logout")]
+        public async void Logout()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

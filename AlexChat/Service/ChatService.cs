@@ -31,7 +31,7 @@ namespace AlexChat.Service
             }
             var chat = await _chatRepo.CreateChat(users, chatname);
 
-            return new ChatViewModel { Users = usernames, Chatname = chatname };
+            return new ChatViewModel { Users = usernames, Chatname = chatname, Id = chat.Id };
         }
 
         public async Task<List<ChatViewModel>> GetChatsForUser(string username)
