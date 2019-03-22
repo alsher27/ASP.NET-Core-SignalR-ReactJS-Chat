@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import store from './store/store.jsx'
+import store from '../store/store.js'
 import { connect } from 'react-redux';
 
 import Login from './Login.jsx';
@@ -14,7 +14,7 @@ class Signin extends Component {
         };
     }
 
-    changeType = () => {
+    toggleType = () => {
         if (this.state.type == 'login')
             this.setState({ type: 'register' })
         else
@@ -25,7 +25,7 @@ class Signin extends Component {
         if (this.state.type == 'login') {
             return (
                 <div>
-                    You can also <button onClick={this.changeType}>Register</button>
+                    You can also <button onClick={this.toggleType}>Register</button>
                     <Login />
                 </div>
             )
@@ -33,22 +33,17 @@ class Signin extends Component {
         if (this.state.type == 'register') {
                 return (
                     <div>
-                        If you already have an account, <button onClick={this.changeType}>Login</button>
+                        If you already have an account, <button onClick={this.toggleType}>Login</button>
                         <Register />
                     </div>
             )
         }
         else {
-            this.changeType;
+            this.toggleType;
         }
     }
 
 }
-
-//const mapStateToProps = state => {
-//    return { username: state.username };
-//};
-//const Signin = connect(mapStateToProps)(SigninConn);
 
 export default Signin;
 

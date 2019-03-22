@@ -28,7 +28,7 @@
     "react-redux": "^5.1.1",
     "react-router-dom": "^4.2.2",
     "redux-starter-kit": "^0.4.3",
-    "redux-thunk": "^2.2.0",
+    "redux-thunk": "^2.3.0",
     "webpack": "^4.29.6"
   }
 }

@@ -1,10 +1,9 @@
 ﻿import React, { Component } from 'react';
-import store from './store/store.jsx'
 import { connect } from 'react-redux';
-import { setUsername } from './actions/authActions.jsx/index.js';
-import { userInfo } from 'os';
+import { bindActionCreators } from 'redux';
+import { userLogin } from '../actions/authActions.js'
 
-    class LoginConn extends Component {
+class LoginConn extends Component {
 
         constructor(props) {
             super(props);
@@ -16,6 +15,13 @@ import { userInfo } from 'os';
 
         }
 
+    executeLogin = () => {
+        var model = {
+            Email: this.state.email,
+            Password: this.state.pass
+        }
+        this.props.Login(model);
+    }
 
     render() {
         return (
@@ -35,7 +41,7 @@ import { userInfo } from 'os';
                     onChange={e => this.setState({ pass: e.target.value })}
                 />
                
-                <button onClick={this.props.Login()}>Login</button>
+                <button onClick={this.executeLogin}>Login</button>
 
             </div>
         );
@@ -45,7 +51,12 @@ import { userInfo } from 'os';
 
 function mapDispatchToProps(dispatch) {
     return {
-        setUsername: username => dispatch(setUsername(username))
+        // Login: model => dispatch(userLogin(model))
+        
+        bindActionCreators({
+        Login: userLogin
+        }, 
+        dispatch)
     };
 }
 const mapStateToProps = state => {

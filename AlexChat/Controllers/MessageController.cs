@@ -24,7 +24,7 @@ namespace AlexChat.Controllers
        
         [HttpGet]    
         [Route("all")]
-        public async Task<List<MessageViewModel>> Get(int id)
+        public async Task<List<MessageViewModel>> GetMessagesForChat(int id)
         {
             return await _messageService.GetMessagesForChat(id);
         }

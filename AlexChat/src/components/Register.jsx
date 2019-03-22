@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
-import store from './store/store.jsx'
+
 import { connect } from 'react-redux';
-import { setUsername } from './actions/setUsername.jsx';
-import { userInfo } from 'os';
+import { userRegister } from '../actions/authActions.js';
+
 
 class RegisterConn extends Component {
 
@@ -19,8 +19,11 @@ class RegisterConn extends Component {
 
     register = () => {
         if (this.state.pass === this.state.confirm) {
-            
-        //register
+        var model = {
+            Email: this.state.email,
+            Password: this.state.pass
+        }    
+        this.props.userRegister(model)
             
         }
         else {
@@ -68,8 +71,8 @@ class RegisterConn extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setUsername: username => dispatch(setUsername(username))
-  };
+        userRegister: model => dispatch(userRegister(model))
+    };
 }
 const mapStateToProps = state => {
     return { username: state.username };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addChats } from './actions/addChats.jsx';
-import { addChat } from './actions/chatActions.jsx/index.js';
+
+import { addChat, searchUsers } from '../actions/chatActions.js';
 
 class ChatCreatorConn extends Component {
 
@@ -11,8 +11,8 @@ class ChatCreatorConn extends Component {
         this.state = {
             nameForChat: '',
             usersForChat: [],
-            query: '',
-            queryRes: []
+            query: ''
+
         };
 
     }
@@ -22,12 +22,11 @@ class ChatCreatorConn extends Component {
             users: [...this.state.usersForChat, this.props.username],
             chatname: this.state.nameForChat
         }
-
-
+        this.props.addChat(model);
     }
 
     searchUsers = () => {
-
+        this.props.searchUsers(this.state.query)
     }
 
 
@@ -41,7 +40,7 @@ class ChatCreatorConn extends Component {
             />
             <button onClick={this.searchUsers}>Search</button>
 
-            {this.state.queryRes.map((username, index) =>
+            {this.props.search_res.map((username, index) =>
                 <div key={index} onClick={() => this.setState({
                     usersForChat: [...this.state.usersForChat, username]
                 })
@@ -49,10 +48,14 @@ class ChatCreatorConn extends Component {
                     {username}
                 </div>)}
             <br />
+
             <div>
                 Selected users:
-                {this.state.usersForChat.map((username, index) =>
-                    <div key={index}>
+            {this.state.usersForChat.map((username, index) =>
+                    <div key={index} onClick={() => this.setState({
+                        usersForChat: usersForChat.filter(s => s != username)
+                    })
+                    }>
                         {username}
                     </div>)}
             </div>
@@ -70,15 +73,16 @@ class ChatCreatorConn extends Component {
 
 const mapStateToProps = state => {
     return {
-        username: state.username,
-        chats: state.chats
+        username: state.auth.username,
+        chats: state.chat.chats,
+        search_res: state.chat.search_res
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        addChats: chats => dispatch(addChats(chats)),
-        addChat: chat => dispatch(addChat(chat))
+        addChat: chat => dispatch(addChat(chat)),
+        searchUsers: username => dispatch(searchUsers(username))
     };
 }
 const ChatCreator = connect(mapStateToProps, mapDispatchToProps)(ChatCreatorConn);

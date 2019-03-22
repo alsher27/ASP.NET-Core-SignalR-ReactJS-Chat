@@ -1,4 +1,4 @@
-export async function Login(model){
+export async function LoginService(model){
     const response = await fetch("api/account/Login/", {
         method: 'POST',
         headers: {
@@ -14,7 +14,7 @@ export async function Login(model){
     return res;
 }
 
-export function Register(model){
+export async function RegisterService(model){
     const response = await fetch("api/account/register/",
     {
         method: 'POST',
@@ -31,6 +31,13 @@ export function Register(model){
     return res;
 };
 
-export function Logout(){
+export function LogoutService(){
     fetch("api/account/logout/");
 }
+
+export async function getUsernameService(){
+    const response = await fetch("/api/account/getusername/");
+    const res = response.text();
+    return res;
+}
+

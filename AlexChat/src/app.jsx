@@ -4,32 +4,21 @@ import { Provider } from "react-redux";
 import { connect } from "react-redux";
 
 //import Login from './Login.jsx';
-import Chat from "./Chat.jsx";
-import Signin from "./Signin.jsx";
-import { setUsername } from './actions/authActions.jsx/index.js';
+import Chat from "./components/Chat.jsx";
+import Signin from "./components/Signin.jsx";
+import { getUsername } from './actions/authActions.js';
+import store from './store/store.js'
 
 
-
-class App extends React.Component {
+class ConnApp extends React.Component {
 
     constructor(props) {
         super(props);
         
     }
 
-    getUsername() {
-        return fetch("/api/account/getusername/")
-            .then(response => response.text())
-            .then(json => {
-                //this.props.setUsername(json);
-                return json;
-            })
-            .catch(alert);
-    }
-
     render() {
-        var username = this.getUsername();
-        username.then(this.props.setUsername);
+        this.props.getUsername();
 
         if (this.props.username) {
             return (
@@ -49,19 +38,19 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { username: state.username };
+    return { username: state.auth.username };
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        setUsername: username => dispatch(setUsername(username))
+        getUsername: () => dispatch(getUsername())
     };
 }
-const ConnApp = connect(mapStateToProps, mapDispatchToProps)(App);
+const App = connect(mapStateToProps, mapDispatchToProps)(ConnApp);
 
 ReactDOM.render(
     <Provider store={store}>
-        <ConnApp />
+        <App />
     </Provider>,
     document.getElementById("content")
 );
