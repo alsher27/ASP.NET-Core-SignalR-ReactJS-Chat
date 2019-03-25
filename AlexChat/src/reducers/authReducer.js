@@ -1,4 +1,4 @@
-import {REGISTER, LOGIN, LOGOUT, GET_USERNAME} from '../actions/actionTypes.js';
+import {REGISTER, LOGIN, LOGOUT, GET_USERNAME} from '../actions/actionTypes';
 const initialState = {
     username: ''
 };
@@ -13,11 +13,12 @@ function authReducer(state = initialState, action) {
     }
 
     if(action.type === LOGOUT){
-        return Object.assign({}, state, { username: '' })
+        return Object.assign({}, state, { username: action.payload })
     }
 
     if (action.type === GET_USERNAME){
-        return Object.assign({}, state, { username: action.payload })
+        const username = action.payload;
+        return {...state, username}
     }
     
     return state;

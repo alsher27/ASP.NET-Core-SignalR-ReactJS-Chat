@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import { connect } from "react-redux";
-
+import {bindActionCreators} from "redux"
 //import Login from './Login.jsx';
 import Chat from "./components/Chat.jsx";
 import Signin from "./components/Signin.jsx";
@@ -42,9 +42,15 @@ const mapStateToProps = state => {
 };
 
 function mapDispatchToProps(dispatch) {
-    return {
+    return{ 
+    // bindActionCreators(
+    //         {           
+    //         getUsername: getUsername          
+    //         },           
+    //         dispatch);
         getUsername: () => dispatch(getUsername())
-    };
+    }
+    ;
 }
 const App = connect(mapStateToProps, mapDispatchToProps)(ConnApp);
 

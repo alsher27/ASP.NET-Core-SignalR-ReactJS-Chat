@@ -1,22 +1,30 @@
-﻿import {REGISTER, LOGIN, LOGOUT, GET_USERNAME } from './actionTypes';
+﻿import {REGISTER, LOGIN, LOGOUT, GET_USERNAME } from './actionTypes.js';
 import {RegisterService, LoginService, LogoutService, getUsernameService} from '../services/authService';
 
-export async function userRegister(model){
-    var payload = await RegisterService(model);
-    return { type: REGISTER, payload }
+export function userRegister(model){
+    return async dispatch => {
+    const payload = await RegisterService(model);
+    dispatch({ type: REGISTER, payload })
+    }
 }
 
-export async function userLogin(model) {
-    var payload = await LoginService(model);
-    return { type: LOGIN, payload } 
+export function userLogin(model) {
+    return async dispatch => {
+    const payload = await LoginService(model);
+    dispatch({ type: LOGIN, payload }) 
+}}
+
+export function userLogout(){ 
+    return async dispatch => {
+    await LogoutService();
+    const payload = '';
+    dispatch( { type: LOGOUT, payload } )
+    }
 }
 
-export function userLogout(){
-    LogoutService();
-    return { type: LOGOUT, payload } 
-}
-
-export async function getUsername(){
-    var payload = await getUsernameService();
-    return { type: GET_USERNAME, payload}
+export function getUsername(){
+    return async dispatch => {
+    const payload = await getUsernameService();
+    dispatch({type: GET_USERNAME, payload })
+    }
 }

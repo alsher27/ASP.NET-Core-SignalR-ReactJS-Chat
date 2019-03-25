@@ -10,11 +10,11 @@ namespace AlexChat.Models
     {
 
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
         
         public int ChatId { get; set; }
-        [ForeignKey("ChatId")]
+        [ForeignKey(nameof(ChatId))]
         public Chat Chat { get; set; }
     }
 }

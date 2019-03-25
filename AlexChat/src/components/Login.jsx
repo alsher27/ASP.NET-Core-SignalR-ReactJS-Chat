@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import { userLogin } from '../actions/authActions.js'
 
 class LoginConn extends Component {
@@ -51,12 +51,7 @@ class LoginConn extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        // Login: model => dispatch(userLogin(model))
-        
-        bindActionCreators({
-        Login: userLogin
-        }, 
-        dispatch)
+        Login: model => dispatch(userLogin(model))
     };
 }
 const mapStateToProps = state => {

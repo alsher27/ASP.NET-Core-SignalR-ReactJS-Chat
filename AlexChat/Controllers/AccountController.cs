@@ -36,7 +36,6 @@ namespace AlexChat.Controllers
         [Route("login")]
         public async Task<string> Login([FromBody] RegisterModel model)
         {
-            
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
             
             if (result.Succeeded)

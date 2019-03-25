@@ -31,13 +31,11 @@ export async function RegisterService(model){
     return res;
 };
 
-export function LogoutService(){
-    fetch("api/account/logout/");
+export async function LogoutService(){
+    await fetch("api/account/logout/");
 }
 
 export async function getUsernameService(){
     const response = await fetch("/api/account/getusername/");
-    const res = response.text();
-    return res;
+    return response.text();
 }
-

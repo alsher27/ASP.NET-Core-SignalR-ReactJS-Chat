@@ -23,11 +23,9 @@ class ConnChat extends Component {
 
     componentDidMount = () => {
 
-        this.props.getChats(this.props.username)
-            .then(this.props.chats.map((chat) => this.props.getMessages(chat.id)));
-
+        this.getallmessages();
         const hubConnection = new SignalR.HubConnectionBuilder()
-            .withUrl('http://localhost:5000/chat', {
+            .withUrl('/chat', {
                 skipNegotiation: true,
                 transport: SignalR.HttpTransportType.WebSockets
             })
@@ -40,6 +38,7 @@ class ConnChat extends Component {
                 .start()
                 .then(() => console.log('Connection started!'))
                 .catch(err => console.log('Error while establishing connection'));
+                
             this.state.hubConnection.serverTimeoutInMilliseconds = 100000;
 
             this.state.hubConnection.on('Receive', (mes) => {
@@ -56,6 +55,11 @@ class ConnChat extends Component {
         this.setState({ message: '' });
     };
 
+    getallmessages = () => {
+        this.props.getChats(this.props.username)
+        .then( () => this.props.chats.map((chat) => this.props.getMessages(chat.id)) );
+       
+    }
 
 
     toggleChatSelector = () => {
@@ -79,7 +83,7 @@ class ConnChat extends Component {
                 </div>
 
                 <h2>Current user: {this.props.username}</h2>
-                <button onClick={this.props.userLogout}>Log out</button>
+                <button onClick={this.props.logout}>Log out</button>
                 <br />
 
                 <h2>Current chat: {this.props.current_chat.chatname || 'Not selected'}</h2>
@@ -109,7 +113,8 @@ const mapStateToProps = state => {
     return {
         username: state.auth.username,
         current_chat: state.chat.current_chat,
-        messages: state.message.messages
+        chats: state.chat.chats,
+        messages: state.message.messages,
     };
 };
 

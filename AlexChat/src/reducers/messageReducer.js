@@ -14,7 +14,10 @@ function messageReducer(state = initialState, action) {
     }
 
     if (action.type === GET_MESSAGES) {
-        return Object.assign({}, state, { messages: [...state.messages, ...action.payload] })
+        return { 
+            ...state,
+            messages: [...state.messages, ...action.payload]
+        }
     }
     return state;
 };

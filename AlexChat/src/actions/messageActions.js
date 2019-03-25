@@ -5,7 +5,8 @@ export function addMessage(payload) {
     return { type: ADD_MESSAGE, payload };
 }
 
-export async function getMessages(model) {
+export function getMessages(model) {
+    return async dispatch => {
     var payload = await getMessagesService(model);
-    return { type: GET_MESSAGES, payload };
+    dispatch({ type: GET_MESSAGES, payload })}
 }
