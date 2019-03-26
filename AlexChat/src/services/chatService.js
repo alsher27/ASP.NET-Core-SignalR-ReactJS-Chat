@@ -14,7 +14,6 @@ export async function addChatService(model){
 export async function getChatsService(username){
     const response = await fetch("api/chat/getchats?username=" + username);
     return await response.json();
-     
 }
 
 

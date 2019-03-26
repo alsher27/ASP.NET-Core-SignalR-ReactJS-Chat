@@ -1,4 +1,4 @@
-import { ADD_CHAT, GET_CHATS, SET_CURRENT_CHAT,SEARCH_USERS } from '../actions/actionTypes.js';
+import { ADD_CHAT, GET_CHATS, SET_CURRENT_CHAT,SEARCH_USERS, SET_CHAT_AS_LOADED } from '../actions/actionTypes.js';
 
 const initialState = {
     current_chat:{},
@@ -21,6 +21,16 @@ function chatReducer(state = initialState, action) {
 
     if(action.type === SEARCH_USERS){
         return Object.assign({}, state, { search_res: action.payload })
+    }
+
+    if(action.type === SET_CHAT_AS_LOADED){
+        return { 
+            ...state, 
+            chats: state.chats.map(
+                (chat, i) => chat.chatname === action.payload.chatname ? {...chat, messagesGot: true}
+                                        : chat
+            )
+         }
     }
     return state;
 };

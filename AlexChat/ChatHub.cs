@@ -27,9 +27,7 @@ namespace AlexChat
             var users = await _chatService.GetUsersForChat(chatid);
             var targetUsers = users.Select(u => u.Id).ToList();
 
-            IClientProxy clientProxy = Clients.Users(targetUsers);
-            await clientProxy.SendAsync("Receive", message);
-
+            
 
             var mes = new MessageViewModel
             {
@@ -38,6 +36,9 @@ namespace AlexChat
                 ChatId = chatid,
                 FromUsername = username
             };
+
+            IClientProxy clientProxy = Clients.Users(targetUsers);
+            await clientProxy.SendAsync("Receive", mes);
 
             _messageService.SaveMessage(mes);
 

@@ -19,8 +19,7 @@ namespace AlexChatRepo.Repository
 
         public async Task<List<Message>> GetMessagesForChat(int id)
         {
-            
-                return await _context.Messages.Include(m=>m.User)
+            return await _context.Messages.Include(m=>m.User)
                                              .Where(mes=>mes.ChatId==id)
                                              .OrderByDescending(m=> m.DateTime)
                                              .Take(20)
@@ -28,11 +27,11 @@ namespace AlexChatRepo.Repository
             
         }
 
-        public async void SaveMessage(Message mes)
+        public void SaveMessage(Message mes)
         {
             
-            await _context.Messages.AddAsync(mes);
-            await _context.SaveChangesAsync();
+             _context.Messages.Add(mes);
+             _context.SaveChanges();
             
         }
     }

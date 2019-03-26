@@ -10,5 +10,6 @@ namespace AlexChatModels.ViewModels
         public List<string> Users { get; set; }
         public string Chatname { get; set; }
         public int Id { get; set; }
+        public bool MessagesGot = false;
     }
 }

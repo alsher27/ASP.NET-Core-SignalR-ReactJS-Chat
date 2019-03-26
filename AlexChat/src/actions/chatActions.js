@@ -1,4 +1,4 @@
-import { ADD_CHAT, GET_CHATS, SET_CURRENT_CHAT, SEARCH_USERS } from './actionTypes';
+import { ADD_CHAT, GET_CHATS, SET_CURRENT_CHAT, SEARCH_USERS, SET_CHAT_AS_LOADED } from './actionTypes';
 import {addChatService, getChatsService, searchUsersService} from '../services/chatService';
 
 export function addChat(model) {
@@ -21,4 +21,9 @@ export function searchUsers(model) {
     return async dispatch => {
     const payload = await searchUsersService(model);
     dispatch({ type: SEARCH_USERS, payload })}
+}
+
+export function setChatAsLoaded(model) {
+    let payload = model;
+    return {type: SET_CHAT_AS_LOADED, payload}
 }

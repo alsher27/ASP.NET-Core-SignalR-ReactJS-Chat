@@ -7,9 +7,10 @@ const initialState = {
 function messageReducer(state = initialState, action) {
     
     if (action.type === ADD_MESSAGE) {
+        console.log('inside!');
         return { 
             ...state,
-            messages: [...state.messages, action.payload]
+            messages: [action.payload, ...state.messages ]
         }
     }
 

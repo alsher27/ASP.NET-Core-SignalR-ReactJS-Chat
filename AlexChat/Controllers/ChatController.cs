@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AlexChat.Controllers
 {
@@ -15,9 +16,12 @@ namespace AlexChat.Controllers
     public class ChatController
     {
         private readonly IChatService _chatService;
-        public ChatController(IChatService chatService)
+        private readonly ChatHub _chatHub;
+        public ChatController(IChatService chatService, ChatHub chatHub)
         {
             _chatService = chatService;
+            _chatHub = chatHub;
+
         }
 
         [HttpPost]
@@ -26,6 +30,12 @@ namespace AlexChat.Controllers
         {
              int chatId = await _chatService.CreateChat(model.Users, model.Chatname);
              return new ChatViewModel { Users = model.Users, Chatname = model.Chatname, Id = chatId };
+
+             //var users = await _chatService.GetUsersForChat(model.Id);
+             //var targetUsers = users.Select(u=>u.Id).ToList();
+             //IClientProxy clientProxy = _chatHub.Clients.Users(targetUsers);
+             //await clientProxy.SendAsync("ChatCreated", chat);
+ 
         }
         
         [HttpGet]

@@ -23,7 +23,7 @@ class ConnChat extends Component {
 
     componentDidMount = () => {
 
-        this.getAllMessages();
+        this.props.getChats(this.props.username)
         const hubConnection = new SignalR.HubConnectionBuilder()
             .withUrl("/chat", {
                 skipNegotiation: true,
@@ -44,6 +44,10 @@ class ConnChat extends Component {
             this.state.hubConnection.on("Receive", (mes) => {
                 this.props.addMessage(mes)
             });
+
+            this.state.hubConnection.on("ChatCreated", (chat) => {
+                this.props.addChat(chat)
+            });
         });
     };
 
@@ -54,13 +58,6 @@ class ConnChat extends Component {
 
         this.setState({ message: '' });
     };
-
-    getAllMessages = () => {
-        this.props.getChats(this.props.username)
-        .then( () => this.props.chats.map((chat) => this.props.getMessages(chat.id)) );
-       
-    }
-
 
     toggleChatSelector = () => {
         this.setState((oldState) => ({ showChatSelector: !oldState.showChatSelector }))
@@ -121,6 +118,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addMessage: model => dispatch(addMessage(model)),
+        addChat: model => dispatch(addChat(model)),
         getChats: username => dispatch(getChats(username)),
         getMessages: chatid => dispatch(getMessages(chatid)),
         logout: () => dispatch(userLogout())
