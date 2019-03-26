@@ -1,5 +1,5 @@
-export async function addChatService(model){
-    const response = await fetch("api/chat/createchat/",
+export async function createChatService(model){
+    await fetch("api/chat/createchat/",
     {
         method: 'POST',
         headers: {
@@ -7,8 +7,8 @@ export async function addChatService(model){
         },
         body: JSON.stringify(model)
     });
-    const res = await response.json();
-    return res;
+    // const res = await response.json();
+    // return res;
 }
 
 export async function getChatsService(username){

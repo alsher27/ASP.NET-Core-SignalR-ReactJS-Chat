@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addChat, searchUsers } from '../actions/chatActions.js';
+import { createChat, searchUsers } from '../actions/chatActions.js';
 
 class ChatCreatorConn extends Component {
 
@@ -22,7 +22,7 @@ class ChatCreatorConn extends Component {
             users: [...this.state.usersForChat, this.props.username],
             chatname: this.state.nameForChat
         }
-        this.props.addChat(model);
+        this.props.createChat(model);
     }
 
     searchUsers = () => {
@@ -81,7 +81,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addChat: chat => dispatch(addChat(chat)),
+        createChat: chat => dispatch(createChat(chat)),
         searchUsers: username => dispatch(searchUsers(username))
     };
 }

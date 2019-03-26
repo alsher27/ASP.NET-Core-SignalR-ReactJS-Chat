@@ -1,4 +1,4 @@
-import { ADD_CHAT, GET_CHATS, SET_CURRENT_CHAT,SEARCH_USERS, SET_CHAT_AS_LOADED } from '../actions/actionTypes.js';
+import { ADD_CHAT, CREATE_CHAT, GET_CHATS, SET_CURRENT_CHAT,SEARCH_USERS, SET_CHAT_AS_LOADED } from '../actions/actionTypes.js';
 
 const initialState = {
     current_chat:{},
@@ -7,8 +7,13 @@ const initialState = {
 };
 
 function chatReducer(state = initialState, action) {
+    if(action.type === CREATE_CHAT){
+        // return Object.assign({}, state, { chats: [...state.chats, action.payload] })
+        return state;
+    }
+
     if(action.type === ADD_CHAT){
-        return Object.assign({}, state, { chats: [...state.chats, action.payload] })
+        return Object.assign({}, state, { chats: [...state.chats, action.payload] })  
     }
 
     if(action.type === GET_CHATS){

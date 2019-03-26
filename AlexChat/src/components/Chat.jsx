@@ -6,7 +6,7 @@ import { getChats } from '../actions/chatActions.js';
 import { addMessage, getMessages } from '../actions/messageActions.js';
 import ChatCreator from './ChatCreator.jsx';
 import ChatSelector from './ChatSelector.jsx';
-
+import {addChat} from '../actions/chatActions'
 
 
 class ConnChat extends Component {
@@ -93,7 +93,7 @@ class ConnChat extends Component {
                 <button onClick={this.sendMessage}>Send</button>
 
                 <div>
-                    {this.props.messages.map((message, index) => {
+                    {[...new Set(this.props.messages)].map((message, index) => {
                         if (message.chatId === this.props.current_chat.id)
                             return <span style={{ display: 'block' }} key={index}><b>{message.fromUsername}</b>: {message.text} - {message.dateTime} </span>
                         return;

@@ -26,7 +26,7 @@ namespace AlexChatRepo.Repository
                 {
                     await _context.AddAsync(new UserChat { Chat = chat, UserId = u.Id });
                 }
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return chat;
             
         }

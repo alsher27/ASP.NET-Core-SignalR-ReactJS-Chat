@@ -13,7 +13,7 @@ namespace AlexChatModels.ViewModels
         public MessageProfile()
         {
             CreateMap<Message, MessageViewModel>(MemberList.Destination)
-                .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.DateTime.ToString("u")))
+                .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.DateTime.ToString()))
                 //.ForMember(dest => dest.ChatId, opt => opt.MapFrom(src => src.ChatId))
                 .ReverseMap()
                 .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => DateTime.Parse(src.DateTime)));

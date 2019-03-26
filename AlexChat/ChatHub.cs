@@ -22,17 +22,14 @@ namespace AlexChat
         }
         public async Task Transfer(string username, string message, int chatid)
         {
-
-
+            
             var users = await _chatService.GetUsersForChat(chatid);
             var targetUsers = users.Select(u => u.Id).ToList();
-
             
-
             var mes = new MessageViewModel
             {
                 Text = message,
-                DateTime = DateTime.Now.ToString("u"),
+                DateTime = DateTime.Now.ToString(),
                 ChatId = chatid,
                 FromUsername = username
             };

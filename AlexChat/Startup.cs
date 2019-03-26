@@ -35,7 +35,9 @@ namespace AlexChat
 
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<IChatService, ChatService>();
+
             
+
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ChatContext>();

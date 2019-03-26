@@ -16,8 +16,8 @@ namespace AlexChat.Controllers
     public class ChatController
     {
         private readonly IChatService _chatService;
-        private readonly ChatHub _chatHub;
-        public ChatController(IChatService chatService, ChatHub chatHub)
+        private readonly IHubContext<ChatHub> _chatHub;
+        public ChatController(IChatService chatService, IHubContext<ChatHub> chatHub)
         {
             _chatService = chatService;
             _chatHub = chatHub;
@@ -26,16 +26,16 @@ namespace AlexChat.Controllers
 
         [HttpPost]
         [Route("createchat")]
-        public async Task<ChatViewModel> CreateChat([FromBody] ChatViewModel model)
+        public async Task CreateChat([FromBody] ChatViewModel model)
         {
-             int chatId = await _chatService.CreateChat(model.Users, model.Chatname);
-             return new ChatViewModel { Users = model.Users, Chatname = model.Chatname, Id = chatId };
+            int chatId = await _chatService.CreateChat(model.Users, model.Chatname);
+            var chat = new ChatViewModel { Users = model.Users, Chatname = model.Chatname, Id = chatId };
 
-             //var users = await _chatService.GetUsersForChat(model.Id);
-             //var targetUsers = users.Select(u=>u.Id).ToList();
-             //IClientProxy clientProxy = _chatHub.Clients.Users(targetUsers);
-             //await clientProxy.SendAsync("ChatCreated", chat);
- 
+            var users = await _chatService.GetUsersForChat(chatId);
+            var targetUsers = users.Select(u => u.Id).ToList();
+            IClientProxy clientProxy = _chatHub.Clients.Users(targetUsers);
+            await clientProxy.SendAsync("ChatCreated", chat);
+
         }
         
         [HttpGet]
