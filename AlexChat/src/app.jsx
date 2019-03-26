@@ -43,11 +43,6 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return{ 
-    // bindActionCreators(
-    //         {           
-    //         getUsername: getUsername          
-    //         },           
-    //         dispatch);
         getUsername: () => dispatch(getUsername())
     }
     ;

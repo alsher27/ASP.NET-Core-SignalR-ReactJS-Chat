@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using AlexChat.ViewModels;
-using AlexChat.Models;
+using AlexChatModels.ViewModels;
+using AlexChatModels;
 using Microsoft.AspNetCore.Identity;
+
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 
@@ -19,11 +20,6 @@ namespace AlexChat.Controllers
             _signInManager = signInManager;
         }
         
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
 
         [HttpGet]
         [Route("getUsername")]

@@ -1,6 +1,6 @@
-﻿using AlexChat.Models;
-using AlexChat.Service;
-using AlexChat.ViewModels;
+﻿using AlexChatModels;
+using AlexChatServices.Service;
+using AlexChatModels.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,7 +24,8 @@ namespace AlexChat.Controllers
         [Route("createchat")]
         public async Task<ChatViewModel> CreateChat([FromBody] ChatViewModel model)
         {
-            return await _chatService.CreateChat(model.Users, model.Chatname);
+             int chatId = await _chatService.CreateChat(model.Users, model.Chatname);
+             return new ChatViewModel { Users = model.Users, Chatname = model.Chatname, Id = chatId };
         }
         
         [HttpGet]

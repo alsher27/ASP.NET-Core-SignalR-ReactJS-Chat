@@ -22,7 +22,7 @@ namespace AlexChat.Service
             _chatContext = chatContext;
             _mapper = mapper;
         }
-        public async Task<ChatViewModel> CreateChat(List<string> usernames, string chatname)
+        public async Task<int> CreateChat(List<string> usernames, string chatname)
         {
             var users = new List<User> { };
             foreach (string u in usernames)
@@ -31,7 +31,7 @@ namespace AlexChat.Service
             }
             var chat = await _chatRepo.CreateChat(users, chatname);
 
-            return new ChatViewModel { Users = usernames, Chatname = chatname, Id = chat.Id };
+            return chat.Id;
         }
 
         public async Task<List<ChatViewModel>> GetChatsForUser(string username)

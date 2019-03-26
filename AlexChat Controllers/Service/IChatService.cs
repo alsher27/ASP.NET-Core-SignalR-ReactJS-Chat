@@ -9,7 +9,7 @@ namespace AlexChat.Service
 {
     public interface IChatService
     {
-        Task<ChatViewModel> CreateChat(List<string> users, string chatname);
+        Task<int> CreateChat(List<string> users, string chatname);
         Task<List<ChatViewModel>> GetChatsForUser(string username);
         Task<List<string>> SearchUsers(string username);
     }

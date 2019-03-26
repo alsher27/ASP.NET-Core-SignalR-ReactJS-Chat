@@ -1,13 +1,13 @@
-﻿import React, { Component } from 'react';
-import * as SignalR from '@aspnet/signalr';
+﻿import * as SignalR from '@aspnet/signalr';
+import React, { Component } from 'react';
 import { connect } from "react-redux";
-
-import ChatSelector from './ChatSelector.jsx'
+import { userLogout } from '../actions/authActions.js';
+import { getChats } from '../actions/chatActions.js';
+import { addMessage, getMessages } from '../actions/messageActions.js';
 import ChatCreator from './ChatCreator.jsx';
+import ChatSelector from './ChatSelector.jsx';
 
-import { getChats } from '../actions/chatActions.js'
-import { getMessages, addMessage } from '../actions/messageActions.js'
-import {userLogout} from '../actions/authActions.js';
+
 
 class ConnChat extends Component {
     constructor(props) {
@@ -23,9 +23,9 @@ class ConnChat extends Component {
 
     componentDidMount = () => {
 
-        this.getallmessages();
+        this.getAllMessages();
         const hubConnection = new SignalR.HubConnectionBuilder()
-            .withUrl('/chat', {
+            .withUrl("/chat", {
                 skipNegotiation: true,
                 transport: SignalR.HttpTransportType.WebSockets
             })
@@ -36,12 +36,12 @@ class ConnChat extends Component {
         this.setState({ hubConnection }, () => {
             this.state.hubConnection
                 .start()
-                .then(() => console.log('Connection started!'))
-                .catch(err => console.log('Error while establishing connection'));
+                .then(() => console.log("Connection started!"))
+                .catch(err => console.log("Error while establishing connection"));
                 
             this.state.hubConnection.serverTimeoutInMilliseconds = 100000;
 
-            this.state.hubConnection.on('Receive', (mes) => {
+            this.state.hubConnection.on("Receive", (mes) => {
                 this.props.addMessage(mes)
             });
         });
@@ -55,7 +55,7 @@ class ConnChat extends Component {
         this.setState({ message: '' });
     };
 
-    getallmessages = () => {
+    getAllMessages = () => {
         this.props.getChats(this.props.username)
         .then( () => this.props.chats.map((chat) => this.props.getMessages(chat.id)) );
        

@@ -1,7 +1,7 @@
 ﻿using System;
-using AlexChat.Models;
-using AlexChat.Repository;
-using AlexChat.Service;
+using AlexChatModels;
+using AlexChatRepo.Repository;
+using AlexChatServices.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AlexChatRepo;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AlexChat
 {
@@ -23,9 +25,6 @@ namespace AlexChat
             services.AddMvc();
             services.AddAutoMapper();
 
-            //  services.AddReact();
-
-
             string connection = "Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;";
         
             services.AddDbContext<ChatContext>(options =>
@@ -36,6 +35,7 @@ namespace AlexChat
 
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<IChatService, ChatService>();
+            
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ChatContext>();
@@ -68,9 +68,6 @@ namespace AlexChat
             {
                 routes.MapHub<ChatHub>("/chat");
             });
-
-
-           // app.UseReact(config => { });
 
             app.UseMvc(routes =>
             {

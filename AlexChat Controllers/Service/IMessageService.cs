@@ -9,7 +9,7 @@ namespace AlexChat.Service
 {
     public interface IMessageService
     {
-        Task<List<MessageViewModel>> GetMessagesForChat(int id);
-        Task<List<User>> ProcessMessage(MessageViewModel message);
+        Task<List<Message>> GetMessagesForChat(int id);
+        Task ProcessMessage(MessageViewModel message);
     }
 }

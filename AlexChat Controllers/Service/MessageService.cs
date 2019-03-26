@@ -8,6 +8,7 @@ using AlexChat.Repository;
 using AlexChat.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AlexChat.Service
 {
@@ -15,39 +16,34 @@ namespace AlexChat.Service
     {
         private readonly IMessageRepo _messageRepository;
         private readonly IMapper _mapper;
-
+        private readonly IHubContext<ChatHub> _hubContext;
         private readonly ChatContext _chatContext;
-        public MessageService(IMessageRepo messageRepository, IMapper mapper, ChatContext chatContext)
+        public MessageService(IMessageRepo messageRepository, IMapper mapper, ChatContext chatContext, IHubContext<ChatHub> hubContext)
 
         {
             _messageRepository = messageRepository;
             _mapper = mapper;
-
             _chatContext = chatContext;
+            _hubContext = hubContext;
         }
-        public async Task<List<MessageViewModel>> GetMessagesForChat(int id)
+        public async Task<List<Message>> GetMessagesForChat(int id)
         {
             var messages = await _messageRepository.GetMessagesForChat(id); 
-            var messagesViewModel = new List<MessageViewModel>();
-            foreach (Message mes in messages)
-            {
-                var temp = _mapper.Map<Message, MessageViewModel>(mes);
-                temp.FromUsername = mes.User.UserName;
-                messagesViewModel.Add(temp);
-            }
-            return messagesViewModel;
+            return messages;
         }
 
 
-        public async Task<List<User>> ProcessMessage(MessageViewModel message)
+        public async Task ProcessMessage(MessageViewModel message)
         {
            
             var mes = _mapper.Map<MessageViewModel, Message>(message);
             mes.UserId = _chatContext.Users.FirstOrDefault(u => u.UserName == message.FromUsername).Id;
             
-            return await _messageRepository.ProcessMessage(mes);
+            var users = await _messageRepository.ProcessMessage(mes);
+            var targetUsers = users.Select(u => u.Id).ToList();
+
+            IClientProxy clientProxy = _hubContext.Clients.Users(targetUsers);
+            await clientProxy.SendAsync("Receive", message);
         }
-        
-        
     }
 }

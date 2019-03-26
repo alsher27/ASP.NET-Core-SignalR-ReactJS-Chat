@@ -1,4 +1,4 @@
-﻿using AlexChat.Models;
+﻿using AlexChatModels;
 using AutoMapper;
 using System;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AlexChat.ViewModels
+namespace AlexChatModels.ViewModels
 {
     public class MessageProfile : Profile
     {

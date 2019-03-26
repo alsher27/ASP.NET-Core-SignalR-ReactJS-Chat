@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AlexChat.Models
+namespace AlexChatModels
 {
     public class Chat
     {
