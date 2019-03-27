@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AlexChatRepo.Entities;
+using AlexChatRepo.Repository;
+using AlexChatServices.Service;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using React.AspNet;
+using AlexChatRepo;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AlexChat
 {
@@ -19,7 +23,34 @@ namespace AlexChat
             services.AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
-          //  services.AddReact();
+            services.AddAutoMapper();
+
+            string connection = "Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;";
+        
+            services.AddDbContext<ChatContext>(options =>
+                options.UseSqlServer(connection));
+
+            services.AddScoped<IMessageRepo, MessageRepo>();
+            services.AddScoped<IMessageService, MessageService>();
+
+            services.AddScoped<IChatRepo, ChatRepo>();
+            services.AddScoped<IChatService, ChatService>();
+
+            
+
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ChatContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            });
+      
             return services.BuildServiceProvider();
         }
 
@@ -34,14 +65,11 @@ namespace AlexChat
           
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("/chat");
             });
-
-
-           // app.UseReact(config => { });
 
             app.UseMvc(routes =>
             {
