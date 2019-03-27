@@ -1,5 +1,5 @@
 ﻿using System;
-using AlexChatModels;
+using AlexChatRepo.Entities;
 using AlexChatRepo.Repository;
 using AlexChatServices.Service;
 using AutoMapper;

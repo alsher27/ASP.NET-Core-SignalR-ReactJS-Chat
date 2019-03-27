@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AlexChatModels;
+using AlexChatRepo.Entities;
 using AlexChatServices.Service;
-using AlexChatModels.ViewModels;
+using AlexChatServices.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

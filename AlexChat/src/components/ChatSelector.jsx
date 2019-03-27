@@ -2,8 +2,8 @@
 
 import { connect } from 'react-redux';
 import { setCurrentChat } from '../actions/chatActions.js';
-import {getMessages} from '../actions/messageActions.js';
-import {setChatAsLoaded} from '../actions/chatActions';
+import { getMessages } from '../actions/messageActions.js';
+import { setChatAsLoaded } from '../actions/chatActions';
 class ChatSelectorConn extends Component {
 
     constructor(props) {
@@ -16,7 +16,7 @@ class ChatSelectorConn extends Component {
 
     render() {
         return <div>    {this.props.chats.map((chat, index) => {
-        return (<div key={index} onClick={() => {this.props.setCurrentChat(chat); if(!chat.messagesGot) {this.props.getMessages(chat.id); this.props.setChatAsLoaded(chat)}}}> {chat.chatname} </div>)
+            return (<div key={index} onClick={() => { this.props.setCurrentChat(chat); if (!chat.messagesGot) { this.props.getMessages(chat.id); this.props.setChatAsLoaded(chat) } }}> {chat.chatname} </div>)
         })}
         </div>
     }

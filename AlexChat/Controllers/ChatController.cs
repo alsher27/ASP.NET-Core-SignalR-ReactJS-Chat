@@ -1,6 +1,6 @@
-﻿using AlexChatModels;
+﻿using AlexChatRepo.Entities;
 using AlexChatServices.Service;
-using AlexChatModels.ViewModels;
+using AlexChatServices.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

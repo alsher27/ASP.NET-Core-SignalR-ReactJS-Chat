@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 
 using AlexChatServices.Service;
-using AlexChatModels.ViewModels;
+using AlexChatServices.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 

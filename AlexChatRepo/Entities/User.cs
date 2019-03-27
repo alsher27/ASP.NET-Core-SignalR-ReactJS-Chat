@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AlexChatModels
+namespace AlexChatRepo.Entities
 {
     public class User : IdentityUser
     {

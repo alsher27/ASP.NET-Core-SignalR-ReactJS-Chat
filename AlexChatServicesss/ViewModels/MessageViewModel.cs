@@ -1,5 +1,5 @@
 ﻿
-namespace AlexChatModels.ViewModels
+namespace AlexChatServices.ViewModels
 {
     public class MessageViewModel
     {

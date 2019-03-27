@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using AlexChatModels.ViewModels;
-using AlexChatModels;
+using AlexChatServices.ViewModels;
+using AlexChatRepo.Entities;
 using Microsoft.AspNetCore.Identity;
 
 using Newtonsoft.Json;

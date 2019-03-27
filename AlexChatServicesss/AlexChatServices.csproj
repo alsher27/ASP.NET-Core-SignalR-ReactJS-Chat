@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AlexChatModels\AlexChatModels.csproj" />
     <ProjectReference Include="..\AlexChatRepo\AlexChatRepo.csproj" />
   </ItemGroup>
 

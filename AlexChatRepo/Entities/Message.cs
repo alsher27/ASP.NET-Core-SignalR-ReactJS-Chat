@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using AlexChatModels;
+
 using Microsoft.EntityFrameworkCore;
-using AlexChatModels;
-namespace AlexChatModels
+
+
+namespace AlexChatRepo.Entities
 {
     public class Message
     {

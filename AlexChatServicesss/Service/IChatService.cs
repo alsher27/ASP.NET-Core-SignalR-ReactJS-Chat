@@ -1,5 +1,5 @@
-﻿using AlexChatModels;
-using AlexChatModels.ViewModels;
+﻿using AlexChatRepo.Entities;
+using AlexChatServices.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

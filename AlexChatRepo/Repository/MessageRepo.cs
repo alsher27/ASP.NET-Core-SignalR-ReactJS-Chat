@@ -1,4 +1,4 @@
-﻿using AlexChatModels;
+﻿using AlexChatRepo.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;

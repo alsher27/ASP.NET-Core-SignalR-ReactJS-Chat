@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AlexChatModels;
-using AlexChatModels.ViewModels;
-using AlexChatRepo;
+using AlexChatRepo.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlexChatRepo.Repository
@@ -31,28 +29,19 @@ namespace AlexChatRepo.Repository
             
         }
 
-        public async Task<List<ChatViewModel>> GetChatsForUser(string username)
+        public async Task<List<Chat>> GetChatsForUser(string username)
         {
-            
-            var cwm = new List<ChatViewModel> { };
-          
-            foreach (Chat c in _context.Chats)
-            {   
-                var users = _context.UserChats.Where(uc => uc.Chat == c)
-                                              .Select(uc => uc.User.UserName)
-                                              .ToList();
 
-                var temp = new ChatViewModel
-                {
-                    Chatname = c.Name,
-                    Users = users,
-                    Id = c.Id
-                };
-                cwm.Add(temp);
-            }
-            var result = cwm.Where(x => x.Users.Contains(username)).ToList();
+            //var res =_context.UserChats.Where(uc => uc.User.UserName == username)
+            //                           .Select(o => new { o.Chat, Users = o.Chat.UserChats.Select(oo => oo.User).ToArray() })
+            //                           .ToList();
 
-            return result;
+            //return res.Select(o => (o.Chat, o.Users)).ToList();
+
+            var res = _context.UserChats.Where(uc => uc.User.UserName == username)
+                .Select(uc => uc.Chat).ToList();
+            return res;
+
             }
         public async Task<List<User>> GetUsersForChat(int chatId)
         {

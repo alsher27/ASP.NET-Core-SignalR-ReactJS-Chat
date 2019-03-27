@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AlexChatModels;
+using AlexChatRepo.Entities;
 using AlexChatRepo.Repository;
-using AlexChatModels.ViewModels;
+using AlexChatServices.ViewModels;
 
 using AlexChatRepo;
 using AutoMapper;
@@ -38,7 +38,13 @@ namespace AlexChatServices.Service
 
         public async Task<List<ChatViewModel>> GetChatsForUser(string username)
         {
-            return await _chatRepo.GetChatsForUser(username);
+            var res = await _chatRepo.GetChatsForUser(username);
+            var chatsForUser = new List<ChatViewModel> { };
+            foreach (var chat in res)
+            {
+                chatsForUser.Add(new ChatViewModel { Chatname = chat.Name, Id = chat.Id, MessagesGot = false });
+            }
+            return chatsForUser;
         }
 
         public async Task<List<User>> GetUsersForChat(int chatId)

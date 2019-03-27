@@ -12,7 +12,6 @@ namespace AlexChat
 {
     public class Program
     {
-        //private static readonly string AppUrl = "http://localhost:5000";
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);
