@@ -17,11 +17,12 @@
     "file-loader": "^1.1.6",
     "redux": "^3.7.2",
     "style-loader": "^0.19.1",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "isomorphic-fetch": "^2.2.1",
+    "jsencrypt": "^3.0.0-rc.1",
     "query-string": "^5.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

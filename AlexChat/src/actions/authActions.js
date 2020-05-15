@@ -3,8 +3,8 @@ import {RegisterService, LoginService, LogoutService, getUsernameService} from '
 
 export function userRegister(model){
     return async dispatch => {
-    const payload = await RegisterService(model);
-    dispatch({ type: REGISTER, payload })
+        const payload = await RegisterService(model);
+        dispatch({ type: REGISTER, payload })
     }
 }
 
@@ -16,15 +16,15 @@ export function userLogin(model) {
 
 export function userLogout(){ 
     return async dispatch => {
-    await LogoutService();
-    const payload = '';
-    dispatch( { type: LOGOUT, payload } )
+        await LogoutService();
+        const payload = '';
+        dispatch( { type: LOGOUT, payload } )
     }
 }
 
 export function getUsername(){
     return async dispatch => {
-    const payload = await getUsernameService();
-    dispatch({type: GET_USERNAME, payload })
+        const payload = await getUsernameService();
+        dispatch({type: GET_USERNAME, payload })
     }
 }

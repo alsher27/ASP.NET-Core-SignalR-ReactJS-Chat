@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using AlexChatServices.ViewModels;
 using AlexChatRepo.Entities;
 using Microsoft.AspNetCore.Identity;
-
+using AlexChat.Utils;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
+using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Text;
+using System.IO;
 
 namespace AlexChat.Controllers
 {
@@ -14,10 +19,13 @@ namespace AlexChat.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IMemoryCache _memoryCache;
+
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IMemoryCache memoryCache)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._memoryCache = memoryCache;
         }
         
 
@@ -45,13 +53,34 @@ namespace AlexChat.Controllers
         }
 
         [HttpPost]
+        [Route("getrsakeys")]
+        public IActionResult GetRSAKeys([FromBody] RegisterModel model)
+        {
+            var csp = new RSACryptoServiceProvider(1024);
+            var pubKey = new StringBuilder(); 
+            var privKey = csp.ExportParameters(true);
+            _memoryCache.Set(model.Email, privKey);
+            using(var outputStream = new StringWriter(pubKey))
+            {
+                RSAUtils.ExportPublicKey(csp, outputStream);
+            }
+            return new OkObjectResult(pubKey.ToString());
+        }
+
+        [HttpPost]
         [Route("register")]
         public async Task<string> Register([FromBody] RegisterModel model)
         {
-            
             User user = new User { Email = model.Email, UserName = model.Email };
+           
+            var csp = new RSACryptoServiceProvider();
+            var privKey = _memoryCache.Get<RSAParameters>(model.Email);
+            csp.ImportParameters(privKey);
             
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var pass = Convert.FromBase64String(model.Password);
+            var decryptedPassword = csp.Decrypt(pass, false);
+
+            var result = await _userManager.CreateAsync(user, Encoding.Default.GetString(decryptedPassword));
             
             if (result.Succeeded)
             {
@@ -70,5 +99,7 @@ namespace AlexChat.Controllers
         {
             await _signInManager.SignOutAsync();
         }
+
+       
     }
 }

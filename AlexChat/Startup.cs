@@ -33,6 +33,7 @@ namespace AlexChat
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
             services.AddAutoMapper(typeof(Startup));
+            services.AddMemoryCache();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
         
@@ -60,6 +61,7 @@ namespace AlexChat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+#pragma warning disable CA1822 // Mark members as static
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -80,5 +82,6 @@ namespace AlexChat
             });
 
         }
+#pragma warning restore CA1822 // Mark members as static
     }
 }
