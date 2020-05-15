@@ -7,8 +7,8 @@ using AlexChatRepo.Repository;
 using AlexChatServices.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR;
 using AlexChatRepo;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlexChatServices.Service
 {
@@ -36,7 +36,7 @@ namespace AlexChatServices.Service
         {
            
             var mes = _mapper.Map<MessageViewModel, Message>(message);
-            mes.UserId = _chatContext.Users.FirstOrDefault(u => u.UserName == message.FromUsername).Id;
+            mes.UserId = (await _chatContext.Users.FirstOrDefaultAsync(u => u.UserName == message.FromUsername))?.Id;
             
             _messageRepository.SaveMessage(mes);
             

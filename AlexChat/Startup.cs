@@ -9,23 +9,32 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using AlexChatRepo;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 
 namespace AlexChat
 {
     public class Startup
     {
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+
+        private readonly IConfiguration Configuration;
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup));
 
-            string connection = "Server=localhost\\SQLEXPRESS;Database=chat;Trusted_Connection=True;";
+            string connection = Configuration.GetConnectionString("DefaultConnection");
         
             services.AddDbContext<ChatContext>(options =>
                 options.UseSqlServer(connection));
@@ -35,9 +44,6 @@ namespace AlexChat
 
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<IChatService, ChatService>();
-
-            
-
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ChatContext>();
@@ -50,35 +56,27 @@ namespace AlexChat
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             });
-      
-            return services.BuildServiceProvider();
+     
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware();
             }
           
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseAuthentication();
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<ChatHub>("/chat");
-            });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute(
-                    name: "DefaultApi",
-                    template: "api/{controller}/{action}/{id?}");
+                endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("DefaultApi", "api/{controller}/{action}/{id?}");
             });
 
         }

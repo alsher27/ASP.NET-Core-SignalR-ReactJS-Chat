@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AlexChatRepo.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using AlexChatRepo.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlexChatRepo
 {
@@ -19,7 +15,6 @@ namespace AlexChatRepo
 
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
-
         public DbSet<UserChat> UserChats { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

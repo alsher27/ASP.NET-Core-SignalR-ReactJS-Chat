@@ -38,8 +38,8 @@ namespace AlexChatRepo.Repository
 
             //return res.Select(o => (o.Chat, o.Users)).ToList();
 
-            var res = _context.UserChats.Where(uc => uc.User.UserName == username)
-                .Select(uc => uc.Chat).ToList();
+            var res = await _context.UserChats.Where(uc => uc.User.UserName == username)
+                .Select(uc => uc.Chat).ToListAsync();
             return res;
 
             }
