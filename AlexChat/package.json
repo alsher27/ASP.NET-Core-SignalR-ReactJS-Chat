@@ -17,7 +17,7 @@
     "file-loader": "^1.1.6",
     "redux": "^3.7.2",
     "style-loader": "^0.19.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
